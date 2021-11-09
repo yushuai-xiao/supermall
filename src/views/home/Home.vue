@@ -3,18 +3,23 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+    <TabControl :titles="['流行','新款','精选']" class="tab-control"
+    @tabClick="tabClick"
+    ref="tabControl1"
+    v-show="isTabFixed"></TabControl>
+
     <Scroll class="content" ref="scroll" :probe-type="3"
     @scroll="contentScroll"  :pull-up-load="true"
     @pullingUp="loadMore">
       <!-- 轮播图 -->
-      <HomeSwiper :banners="banners"></HomeSwiper>
+      <HomeSwiper :banners="banners" @swiperImageLoad="swiperImageLoad"></HomeSwiper>
       <!-- 推荐 -->
       <RecommendView :recommends="recommends"></RecommendView>
       <!-- 本周流行 -->
       <FeatureView></FeatureView>
       <!-- 选项卡 -->
       <TabControl :titles="['流行','新款','精选']" class="tab-control"
-      @tabClick="tabControl"
+      @tabClick="tabClick" ref="tabControl2"
       ></TabControl>
       <!-- 商品区 -->
       <GoodsList :goods="goods[currentType].list"></GoodsList>
@@ -62,7 +67,9 @@
           'sell':{page:0,list:[]},
         },
         currentType:'pop',
-        isShowBackTop:false
+        isShowBackTop:false,
+        tabOffsetTop:0,
+        isTabFixed:false
       }
     },
     created(){
@@ -105,7 +112,7 @@
         })
       },
       //tabControl切换之间的数据请求类型
-      tabControl(index){
+      tabClick(index){
         switch(index){
           case 0:
             this.currentType = "pop"
@@ -116,6 +123,8 @@
           case 2:
             this.currentType = 'sell';
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
       },
       //点击backTop回到顶部
       backClick(){
@@ -126,10 +135,19 @@
       },
       //滚动到某个位置显示和隐藏回到顶部按钮
       contentScroll(position){
+        //判断backtop按钮是否显示
         this.isShowBackTop = -position.y > 1000
+        //决定tabControl是否吸顶
+        this.isTabFixed = -position.y > this.tabOffsetTop
       },
       loadMore(){
         this.getHomeGoods(this.currentType)
+      },
+      //轮播图加载完成
+      swiperImageLoad(){
+        console.log('111');
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
+        console.log(this.tabOffsetTop);
       }
     }
   }
@@ -143,15 +161,17 @@
   .home-nav{
     background-color: var(--color-tint);
     color: #FFFFFF;
-    position: fixed;
+    /* 在使用浏览器原生 为了让导航不一起滚动，利用BS就不需要了*/
+    /*  position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 1; */
   }
   .tab-control{
     /* position: sticky; */
-    top: 44px;
+    /* top: 44px; */
+    position: relative;
     z-index: 9;
   }
   .content{
