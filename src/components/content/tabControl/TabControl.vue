@@ -28,7 +28,7 @@
     },
     methods:{
       itemClick(index){
-        console.log("1111");
+        // console.log("1111");
         this.currentIndex = index;
         //把index传给外面的home，以做到点击切换
         this.$emit('tabClick',index)
