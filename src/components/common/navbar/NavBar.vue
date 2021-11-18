@@ -19,7 +19,7 @@
   }
 </script>
 
-<style>
+<style scoped="scoped">
   .nav-bar{
     display: flex;
     height: 44px;

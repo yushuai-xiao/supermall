@@ -12,7 +12,7 @@
     @scroll="contentScroll"  :pull-up-load="true"
     @pullingUp="loadMore">
       <!-- 轮播图 -->
-      <HomeSwiper :banners="banners" @swiperImageLoad="swiperImageLoad"></HomeSwiper>
+      <HomeSwiper :banners="banners" @itemImgLoad="swiperImageLoad"></HomeSwiper>
       <!-- 推荐 -->
       <RecommendView :recommends="recommends"></RecommendView>
       <!-- 本周流行 -->
@@ -41,7 +41,8 @@
   import FeatureView from './childComps/FeatureView.vue'
 
   import { getHomeMultidata,getHomeGoods } from 'network/home'
-  import {debounce} from 'common/untils.js'
+  import {debounce} from 'common/utils.js'
+  import {imgListenerMixin} from 'common/mixins.js'
   export default {
     name: "Home",
     components:{
@@ -69,7 +70,8 @@
         currentType:'pop',
         isShowBackTop:false,
         tabOffsetTop:0,
-        isTabFixed:false
+        isTabFixed:false,
+        saveY:0 //记录离开的位置
       }
     },
     created(){
@@ -83,12 +85,25 @@
       //   this.$refs.scroll.refresh();
       // })
     },
+    mixins:[imgListenerMixin],
     mounted(){
-      //监听item中的图片加载完成
-      const refresh = debounce(this.$refs.scroll.refresh,50)
-      this.$bus.$on('itemImgLoad',()=>{
-        refresh()
-      })
+      // //监听item中的图片加载完成
+      // const refresh = debounce(this.$refs.scroll.refresh,50)
+      // this.$bus.$on('itemImgLoad',()=>{
+      //   refresh()
+      // })
+    },
+    activated() {
+      // this.$refs.scroll.scrollTo(0,this.saveY,0)
+      this.$refs.scroll.refresh()
+      this.$refs.scroll.scrollTo(0,this.saveY,0)
+    },
+    deactivated() {
+      //保存离开Home时的位置
+      this.saveY = this.$refs.scroll.getScrollY()
+      // console.log('deactive');
+      // console.log(this.saveY);
+
     },
     methods:{
       /* 网络请求方法*/
@@ -145,9 +160,9 @@
       },
       //轮播图加载完成
       swiperImageLoad(){
-        console.log('111');
+        // console.log('111');
         this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
-        console.log(this.tabOffsetTop);
+        // console.log(this.tabOffsetTop);
       }
     }
   }

@@ -10,7 +10,7 @@
   }
 </script>
 
-<style>
+<style scoped="scoped">
   #tab-bar{
     display: flex;
     background-color: #f6f6f6;
@@ -21,5 +21,5 @@
     bottom: 0;
     box-shadow: 0px -3px 1px rgba(100,100,100,0.08);
   }
- 
+
 </style>

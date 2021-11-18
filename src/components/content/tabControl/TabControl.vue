@@ -37,7 +37,7 @@
   }
 </script>
 
-<style>
+<style scoped="scoped">
   .tab-control{
     display: flex;
     justify-content: space-around;

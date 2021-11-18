@@ -35,7 +35,7 @@
     methods:{
       imageLoad(){
         if (!this.isLoad){
-          this.$emit("swiperImageLoad")
+          this.$emit("itemImgLoad")
           this.isLoad = true
         }
       }

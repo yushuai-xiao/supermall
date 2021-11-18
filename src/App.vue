@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <keep-alive>
+    <keep-alive exclude="Detail">
       <router-view></router-view>
     </keep-alive>
-    <main-tabBar></main-tabBar>
+    <main-tabBar v-if="isDetail"></main-tabBar>
   </div>
 </template>
 
@@ -14,6 +14,11 @@ export default {
   name: 'App',
   components: {
     MainTabBar
+  },
+  computed:{
+    isDetail(){
+      return this.$route.path.indexOf('/detail')
+    }
   }
 }
 </script>

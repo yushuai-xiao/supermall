@@ -33,8 +33,9 @@
       this.scroll = new BetterScroll(this.$refs.wrapper,{
         probeType:this.probeType,
         pullUpLoad:this.pullUpLoad,
-        click:true
+        click:true,
         // pullUpLoad: true
+        observeDOM:true,
       })
      //监听scroll的位置，隐藏和显示，回到顶部按钮
       if(this.probeType ===2 || this.probeType ===3){
@@ -53,6 +54,7 @@
       //点击回到某个位置
       scrollTo(x,y,time=500){
         this.scroll && this.scroll.scrollTo(x,y,time);
+         // this.scroll && this.scroll.scrollTo(0,-200,0)
       },
       //完成上拉加载更多
       finishPullUp(){
@@ -62,6 +64,10 @@
       refresh(){
         this.scroll && this.scroll.refresh()
         // console.log('111');
+      },
+      //获取位置y 记录离开位置
+      getScrollY(){
+        return this.scroll ? this.scroll.y : 0;
       }
     }
   }
