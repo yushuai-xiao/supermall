@@ -38,9 +38,11 @@
         observeDOM:true,
       })
      //监听scroll的位置，隐藏和显示，回到顶部按钮
-      if(this.probeType ===2 || this.probeType ===3){
-        this.scroll.on('scroll',position=>{
-          this.$emit('scroll',position)
+     // console.log(this.probeType  === 3);
+      if(this.probeType ===2 || (this.probeType === 3) ){
+        this.scroll.on('scroll', position => {
+          this.$emit('scroll',position);
+
         })
       }
       //监听scroll滚动到底部，上拉加载更多

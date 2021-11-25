@@ -43,6 +43,7 @@
 
 <style scoped="scoped">
   .title{
+    height: 44px;
     display: flex;
   }
   .title-item{
